@@ -1,6 +1,7 @@
 import enum
 
-from sqlalchemy import String, Boolean, Integer, Enum, JSON
+from pydantic import json
+from sqlalchemy import String, Boolean, Integer, Enum, JSON, Column
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 
 
@@ -117,7 +118,15 @@ class Card(Base):
     saving_throw_type: Mapped[SavingThrowType] = mapped_column(Enum(SavingThrowType))
     hit_type: Mapped[HitType] = mapped_column(Enum(HitType))
     damage: Mapped[bool] = mapped_column(Boolean)
-    components: Mapped[list[str]] = mapped_column(JSON, default=list)
+    _components: Mapped[str] = Column("components", String, nullable=False, default="[]")
+    @property
+    def components(self) -> set[str]:
+        return set(json.loads(self._components))
+    @components.setter
+    def components(self, value: set[str]):
+        self._components = json.dumps(list(value))
+
+
 	# damage_XdY: '??'
 	# components: rethink as multi-value (string/flags/table) rather than single enum
 
