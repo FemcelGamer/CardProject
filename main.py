@@ -46,6 +46,28 @@ def add_card(card: Card,
 		hit_type=card.hit_type,
 		damage=card.damage,
 		components=card.components
+	# title: TitleType
+	# description: DescriptionType
+	# damage_type: DamageType
+	# average_damage: AverageDamageType
+	# attack_type: bool
+	# effect: EffectType
+	# concentration: bool
+	# duration_type: DurationType
+	# school_type: SchoolType
+	# level_type: SpellLevelType
+	# casting_time_type: CastingTimeType
+	# reaction_trigger: ReactionType
+	# condition_type: ConditionType
+	# condition: bool
+	# spell_slot_upcast: UpcastType
+	# range: RangeType
+	# radius: RadiusType
+	# saving_throw_type: SavingThrowType
+	# hit_type: HitType
+	# damage: bool
+	# components: set[str] = Field(default_factory=set)
+	# 	домашка: сравнить, запушить проект
 	)
 	session.add(db_card)
 	session.commit()
