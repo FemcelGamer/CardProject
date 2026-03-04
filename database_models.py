@@ -1,102 +1,101 @@
 import enum
-
-from pydantic import json
-from sqlalchemy import String, Boolean, Integer, Enum, JSON, Column
+import json
+from sqlalchemy import String, Boolean, Integer, Enum, Column
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 
 
 class Base(DeclarativeBase):
-	pass
+    pass
 
 class DamageType(enum.Enum):
-	necrotic = 'necrotic'
-	radiant = 'radiant'
-	force = 'force'
-	fire = 'fire'
-	cold = 'cold'
-	thunder = 'thunder'
-	lightning = 'lightning'
-	acid = 'acid'
-	poison = 'poison'
-	slashing = 'slashing'
-	piercing = 'piercing'
-	psychic = 'psychic'
-	bludgeoning = 'bludgeoning'
+    necrotic = 'necrotic'
+    radiant = 'radiant'
+    force = 'force'
+    fire = 'fire'
+    cold = 'cold'
+    thunder = 'thunder'
+    lightning = 'lightning'
+    acid = 'acid'
+    poison = 'poison'
+    slashing = 'slashing'
+    piercing = 'piercing'
+    psychic = 'psychic'
+    bludgeoning = 'bludgeoning'
 
 class SchoolType(enum.Enum):
-	abjuration = 'abjuration'
-	conjuration = 'conjuration'
-	divination = 'divination'
-	enchantment = 'enchantment'
-	evocation = 'evocation'
-	illusion = 'illusion'
-	necromancy = 'necromancy'
-	transmutation = 'transmutation'
+    abjuration = 'abjuration'
+    conjuration = 'conjuration'
+    divination = 'divination'
+    enchantment = 'enchantment'
+    evocation = 'evocation'
+    illusion = 'illusion'
+    necromancy = 'necromancy'
+    transmutation = 'transmutation'
 #
 class SpellLevelType(enum.Enum):
-	cantrip = 'cantrip'
-	first = '1 level'
-	second = '2 level'
-	third = '3 level'
-	fourth = '4 level'
-	fifth = '5 level'
-	sixth = '6 level'
-	seventh = '7 level'
-	eighth = '8 level'
-	ninth = '9 level'
+    cantrip = 'cantrip'
+    first = '1 level'
+    second = '2 level'
+    third = '3 level'
+    fourth = '4 level'
+    fifth = '5 level'
+    sixth = '6 level'
+    seventh = '7 level'
+    eighth = '8 level'
+    ninth = '9 level'
 #
 class DurationType(enum.Enum):
-	instantaneous = 'instantaneous'
-	oneMinute = '1 minute'
-	tenMinutes = '10 minutes'
-	oneHour = '1 hour'
-	eightHours = '8 hours'
-	day = '24 hours'
+    instantaneous = 'instantaneous'
+    oneMinute = '1 minute'
+    tenMinutes = '10 minutes'
+    oneHour = '1 hour'
+    eightHours = '8 hours'
+    day = '24 hours'
 
 class CastingTimeType(enum.Enum):
-	action_cast = 'action'
-	bonus_cast = 'bonus action'
-	reaction_cast = 'reaction'
-	other_cast = 'period of time'
+    action_cast = 'action'
+    bonus_cast = 'bonus action'
+    reaction_cast = 'reaction'
+    other_cast = 'period of time'
 #
 class ConditionType(enum.Enum):
-	Blinded = 'Blinded'
-	Charmed = 'Charmed'
-	Deafened = 'Deafened'
-	Exhaustion = 'Exhaustion'
-	Frightened = 'Frightened'
-	Grappled = 'Grappled'
-	Incapacitated = 'Incapacitated'
-	Invisible = 'Invisible'
-	Paralyzed = 'Paralyzed'
-	Petrified = 'Petrified'
-	Poisoned = 'Poisoned'
-	Prone = 'Prone'
-	Restrained = 'Restrained'
-	Stunned = 'Stunned'
-	Unconscious = 'Unconscious'
-	Bloodied = 'Bloodied'
+    Blinded = 'Blinded'
+    Charmed = 'Charmed'
+    Deafened = 'Deafened'
+    Exhaustion = 'Exhaustion'
+    Frightened = 'Frightened'
+    Grappled = 'Grappled'
+    Incapacitated = 'Incapacitated'
+    Invisible = 'Invisible'
+    Paralyzed = 'Paralyzed'
+    Petrified = 'Petrified'
+    Poisoned = 'Poisoned'
+    Prone = 'Prone'
+    Restrained = 'Restrained'
+    Stunned = 'Stunned'
+    Unconscious = 'Unconscious'
+    Bloodied = 'Bloodied'
 
 class SavingThrowType(enum.Enum):
-	strength = 'STR'
-	dexterity = 'DEX'
-	constitution = 'CON'
-	wisdom = 'WIS'
-	intelligence = 'INT'
-	charisma = 'CHA'
+    strength = 'STR'
+    dexterity = 'DEX'
+    constitution = 'CON'
+    wisdom = 'WIS'
+    intelligence = 'INT'
+    charisma = 'CHA'
 #
 class HitType(enum.Enum):
-	on_hit = 'to hit'
-	saving_throw = 'saving throw'
+    on_hit = 'to hit'
+    saving_throw = 'saving throw'
 
 class ComponentsType(enum.Enum):
-	somatic = 'S'
-	verbal = 'V'
-	material = 'M'
+    somatic = 'S'
+    verbal = 'V'
+    material = 'M'
 
 class Card(Base):
     # исправлены типы Enum, Boolean
-    tablename = 'cards'
+    __tablename__ = 'cards'
     card_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
@@ -127,8 +126,8 @@ class Card(Base):
         self._components = json.dumps(list(value))
 
 
-	# damage_XdY: '??'
-	# components: rethink as multi-value (string/flags/table) rather than single enum
+    # damage_XdY: '??'
+    # components: rethink as multi-value (string/flags/table) rather than single enum
 
 
 

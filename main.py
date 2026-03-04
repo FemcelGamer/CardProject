@@ -1,9 +1,11 @@
 from fastapi import FastAPI, HTTPException, Depends
-from sqlalchemy.testing import db
 
 from database import SessionLocal
 from database_models import Card
 from sqlalchemy.orm import Session
+
+from validation_models import CardOutput, CardCreate, CardUpdate
+
 app = FastAPI()
 
 def get_session():
@@ -14,15 +16,15 @@ def get_session():
 		db.close()
 
 #get all
-@app.get('/api/cards')
+@app.get('/api/cards', response_model=list[CardOutput])
 def get_all_cards(session : Session = Depends(get_session)):
 	return session.query(Card).order_by(Card.title).all()
 
 # CREATE
-@app.post('/api/cards')
+@app.post('/api/cards', response_model=CardCreate)
 def add_card(card: Card,
 			 session: Session = Depends(get_session)):
-	db.card = Card(
+	db_card = Card(
 		title=card.title,
 		description=card.description,
 		damage_type=card.damage_type,
@@ -45,13 +47,13 @@ def add_card(card: Card,
 		damage=card.damage,
 		components=card.components
 	)
-	session.add(db.card)
+	session.add(db_card)
 	session.commit()
-	session.refresh(db.card)
-	return db.card
+	session.refresh(db_card)
+	return db_card
 
 # GET BY ID
-@app.post('/api/cards/{card_id}')
+@app.get('/api/cards/{card_id}', response_model=CardOutput)
 def get_card_by_id(card_id: int, session: Session = Depends(get_session)):
 	db_card = session.query(Card).filter(Card.card_id == card_id).first()
 
@@ -70,10 +72,10 @@ def delete_card(card_id: int, session: Session = Depends(get_session)):
 	session.delete(db_card)
 	session.commit()
 	session.refresh(db_card)
-	return {'Message': 'Card successfully deleted'}
+	return {'Message': f'Card with {card_id} successfully deleted',}
 
 
-@app.patch('/api/cards/{card_id}')
+@app.patch('/api/cards/{card_id}', response_model=CardUpdate)
 def update_card(card_id: int, session: Session = Depends(get_session)):
 	db_card = session.query(Card).filter(Card.card_id == card_id).first()
 
@@ -83,6 +85,7 @@ def update_card(card_id: int, session: Session = Depends(get_session)):
 	session.commit()
 	session.refresh(db_card)
 	return db_card
+
 
 # if name in items:
 	# 	items.remove(name)
