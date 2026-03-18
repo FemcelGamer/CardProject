@@ -22,7 +22,7 @@ def get_all_cards(session : Session = Depends(get_session)):
 
 # CREATE
 @app.post('/api/cards', response_model=CardCreate)
-def add_card(card: Card,
+def add_card(card: CardCreate,
 			 session: Session = Depends(get_session)):
 	db_card = Card(
 		title=card.title,
@@ -46,28 +46,7 @@ def add_card(card: Card,
 		hit_type=card.hit_type,
 		damage=card.damage,
 		components=card.components
-	# title: TitleType
-	# description: DescriptionType
-	# damage_type: DamageType
-	# average_damage: AverageDamageType
-	# attack_type: bool
-	# effect: EffectType
-	# concentration: bool
-	# duration_type: DurationType
-	# school_type: SchoolType
-	# level_type: SpellLevelType
-	# casting_time_type: CastingTimeType
-	# reaction_trigger: ReactionType
-	# condition_type: ConditionType
-	# condition: bool
-	# spell_slot_upcast: UpcastType
-	# range: RangeType
-	# radius: RadiusType
-	# saving_throw_type: SavingThrowType
-	# hit_type: HitType
-	# damage: bool
-	# components: set[str] = Field(default_factory=set)
-	# 	домашка: сравнить, запушить проект
+	
 	)
 	session.add(db_card)
 	session.commit()
@@ -93,24 +72,21 @@ def delete_card(card_id: int, session: Session = Depends(get_session)):
 
 	session.delete(db_card)
 	session.commit()
-	session.refresh(db_card)
 	return {'Message': f'Card with {card_id} successfully deleted',}
 
 
 @app.patch('/api/cards/{card_id}', response_model=CardUpdate)
-def update_card(card_id: int, session: Session = Depends(get_session)):
+def update_card(card_id: int, card: CardUpdate, session: Session = Depends(get_session)):
 	db_card = session.query(Card).filter(Card.card_id == card_id).first()
 
 	if not db_card:
 		raise HTTPException(status_code=404, detail="Card not found")
 
+	for key, value in card.model_dump(exclude_unset=True).items():
+		setattr(db_card, key, value)
+
 	session.commit()
 	session.refresh(db_card)
 	return db_card
 
-
-# if name in items:
-	# 	items.remove(name)
-	# 	return items
-	# raise HTTPException(404, 'Invalid data: item not found, punk')
 
