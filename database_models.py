@@ -117,7 +117,7 @@ class Card(Base):
     saving_throw_type: Mapped[SavingThrowType] = mapped_column(Enum(SavingThrowType))
     hit_type: Mapped[HitType] = mapped_column(Enum(HitType))
     damage: Mapped[bool] = mapped_column(Boolean)
-    _components: Mapped[str] = Column("components", String, nullable=False, default="[]")
+    _components: Mapped[str] = mapped_column("components", String, nullable=False, default="[]")
     @property
     def components(self) -> set[str]:
         return set(json.loads(self._components))

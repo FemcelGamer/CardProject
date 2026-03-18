@@ -14,21 +14,11 @@ ReactionType = Annotated[str, Field(min_length=5, max_length=100)]
 UpcastType = Annotated[str, Field(min_length=5, max_length=100)]
 RangeType = Annotated[int, Field(ge=0, le=1000)]
 RadiusType = Annotated[int, Field(ge=0, le=1000)]
-# card_id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     title: Mapped[str] = mapped_column(String)
-#     description: Mapped[str] = mapped_column(String)
-#     damage_type: Mapped[DamageType] = mapped_column(Enum(DamageType))
-#     average_damage: Mapped[int] = mapped_column(Integer)
-#     effect: Mapped[str] = mapped_column(String)
-# reaction_trigger: Mapped[str] = mapped_column(String)
-#     condition_type: Mapped[ConditionType] = mapped_column(Enum(ConditionType))
-#     condition: Mapped[bool] = mapped_column(Boolean)
-#     spell_slot_upcast: Mapped[str] = mapped_column(String)
-#     range: Mapped[int] = mapped_column(Integer)
-#     radius: Mapped[int] = mapped_column(Integer)
+
 
 
 class CardBase(BaseModel):
+    card_id: int
     title: TitleType
     description: DescriptionType
     damage_type: DamageType
@@ -75,7 +65,7 @@ class CardCreate(BaseModel):
     components: set[str] = Field(default_factory=set)
 
 class CardUpdate(BaseModel):
-    card_title: TitleType | None = None
+    title: TitleType | None = None
     description: DescriptionType | None = None
     damage_type: DamageType | None = None
     average_damage: AverageDamageType | None = None
